@@ -1,0 +1,23 @@
+`timescale 1ns/1ps  // tells the simulator how long a time unit is.
+module Combined_tb; //with no ports — a testbench doesn't connect to anything outside itself, so there's nothing to declare in the parentheses. It's self-contained.
+reg a, b, c;
+//Inside your actual hardware modules, inputs are just input a — something else drives them. But here, the testbench itself is what's going to set a, b, c's values, and only a reg can be assigned inside a procedural block (the initial block below). So: things the testbench controls → reg. Things it only observes → wire.
+wire result; //the testbench doesn't drive result, it only watches it (your Combined module drives it), so it stays a wire.
+combined dut (
+.a(a) ,
+.b(b) , 
+.c(c) ,
+.result(result)
+); //dut stands for "Device Under Test" . You're placing one copy of your real Combined circuit inside the testbench and wiring the testbench's regs and wire to its ports.
+initial begin // an initial block runs its statements in order, once, starting at time 0 — this is one of the few places Verilog actually behaves like a normal top-to-bottom script, unlike your always-on hardware modules.
+a = 0; b = 0; c = 0; 
+#10;//wait 10 time units before continuing to the next line.
+a = 1; b = 0; c = 0;
+#10;
+a = 1; b = 1; c= 0;
+#10;
+a = 0; b = 0; c = 1;
+#10;
+$stop;
+end //tells the simulator to stop simulating.
+endmodule

@@ -6,21 +6,15 @@ module readout (
     output reg [13:0] raddr,   // which page to read from
     output reg data_out       // the bit that comes back off that page
 );
-    reg pending;   // "raddr just moved, rdata isn't caught up yet"
-
-    always @(posedge clk or posedge reset) begin
+    always @(posedge clk) begin
         if (reset) begin
             raddr    <= 0;
             data_out <= 0;      // start over at page 0
-            pending  <= 0;
         end
-        else if (rd_strobe) begin
-            raddr   <= raddr + 1;   // move on to the next page
-            pending <= 1;             // remember: rdata not ready yet
-        end
-        else if (pending) begin
-            data_out <= rdata;      // buffer has caught up, grab it now
-            pending  <= 0;
+        else begin
+            data_out <= rdata;      // rdata is always mem[raddr] — no strobe needed to see it
+            if (rd_strobe)
+                raddr <= raddr + 1;   // advance AFTER the current sample has been read
         end
     end
 endmodule

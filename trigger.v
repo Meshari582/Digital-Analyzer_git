@@ -12,7 +12,7 @@ module trigger (
                         // nothing outside this module ever needs to see it —
                         // it's private, internal memory only.
 
- always @(posedge clk or posedge reset) begin
+ always @(posedge clk) begin
     if (reset) begin 
 	 output_trigger <= 0;
 	 prev_sample    <=0;

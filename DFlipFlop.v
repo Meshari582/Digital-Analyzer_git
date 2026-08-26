@@ -11,7 +11,7 @@ module DFlipFlop (
 								  //reg is only needed when a signal is assigned inside an always block
 );
 
-    always @(posedge clk or posedge reset) begin   // This block runs exactly once per clock
+    always @(posedge clk) begin   // This block runs exactly once per clock
                                     // rising edge — nothing happens in between
         if (reset)                  // Checked only at the clock edge, not
                                      // continuously — parentheses required

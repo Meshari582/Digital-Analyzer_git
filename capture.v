@@ -19,7 +19,7 @@ module capture (
     // the sample was actually taken at, not the one it's about to become.
     assign we = (state == RUNNING) && sample_en;
 
-    always @(posedge clk or posedge reset) begin
+    always @(posedge clk) begin
 	if (reset) begin
         done           <= 0;
         sample_counter <= 0;

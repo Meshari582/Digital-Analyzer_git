@@ -7,24 +7,17 @@ module rate_div (
 	 
 	  wire [12:0] count;
 	  wire counter_reset;
-
-	  // hit_max is a registered (synchronous) version of "count == N-1".
-	  // This delays the reset trigger by one clock edge, so count actually
-	  // holds at N-1 for a full cycle instead of self-resetting the instant
-	  // it gets there (which was racing ahead of sample_en's own check).
-	  reg hit_max; //instead of adding up to 8191, it counts up to N-1
-	  always @(posedge clk or posedge reset) begin
-	      if (reset)
-	          hit_max <= 0;
-	      else
-	          hit_max <= (count == N-1);
-	  end
-//was count equal to N-1 just now? If yes, hit_max becomes 1. If no, hit_max becomes 0.
+     
+	  // Combinational compare — was a registered "hit_max" flop before, which delayed
+	  // the reset trigger by one clock edge and made count sit at N-1 for two cycles
+	  // instead of one (that was the source of the extra 20ns per period).
+	  wire hit_max = (count == N-1);
+//is count equal to N-1 right now? If yes, hit_max is 1. If no, hit_max is 0.
 
 
 	   assign counter_reset = reset || hit_max; //the module's own external reset input.
 	                                                  //If a person/system asserts this, it's true (1).
-																	  
+													  
      // continuously drive this wire's value based  on whatever's on the right-hand side,
 	  //updating instantly anytime the right side changes
 	  
@@ -36,7 +29,7 @@ module rate_div (
         .counter(count)
 		 );
 		 
-always @(posedge clk or posedge reset) begin
+always @(posedge clk) begin
 	 
 	   if (reset) begin 
 	sample_en <= 0;

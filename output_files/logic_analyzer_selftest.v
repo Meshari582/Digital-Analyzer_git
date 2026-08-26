@@ -9,11 +9,11 @@ module logic_analyzer_selftest (
     output done,
     output led_heartbeat   // watch this LED to confirm the FPGA is alive/clocking
 );
-    reg [27:0] slow_counter;      // 50MHz clock -> need ~250,000,000 ticks for 5s
+    reg [27:0] slow_counter;   	 // 50MHz clock -> need ~250,000,000 ticks for 5s
     reg probe_fake;
-
+    wire reset_h = ~reset;
     always @(posedge clk) begin
-        if (!reset) begin              // S1 idle = HIGH = running; S1 pressed = LOW = reset
+        if (reset_h) begin              // S1 idle = HIGH = running; S1 pressed = LOW = reset
             slow_counter <= 0;
             probe_fake   <= 0;
         end else if (slow_counter == 28'd249_999_999) begin  // 50,000,000 * 5
@@ -28,7 +28,7 @@ module logic_analyzer_selftest (
 
     logic_analyzer_top dut (
         .clk(clk),
-        .reset(reset),
+        .reset(reset_h),
         .probe_in_raw(probe_fake),
         .polarity(polarity),
         .arm_raw(arm_raw),

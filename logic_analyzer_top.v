@@ -107,10 +107,35 @@ module logic_analyzer_top (
     wire sample_en_0, sample_en_1, sample_en_2, sample_en_3; // one output per divider
     reg  sample_en;                                          // the one we actually forward
 
-    rate_div #(.N(5))    rate_div_0 (.clk(clk), .reset(reset), .sample_en(sample_en_0));
-    rate_div #(.N(50))   rate_div_1 (.clk(clk), .reset(reset), .sample_en(sample_en_1));
-    rate_div #(.N(500))  rate_div_2 (.clk(clk), .reset(reset), .sample_en(sample_en_2));
-    rate_div #(.N(5000)) rate_div_3 (.clk(clk), .reset(reset), .sample_en(sample_en_3));
+    // The dividers used to free-run from power-on, completely unaware of
+    // whether a capture was happening. That meant the probe edge landed at a
+    // random point in the divider's cycle, so the gap between the trigger
+    // firing and sample 0 being written varied from 1 to N clocks, differently
+    // on every single capture. The PC tool assumes sample n happened exactly
+    // n * period after the trigger, so that gap was going straight into the
+    // time axis as error.
+    //
+    // div_run holds all four dividers in reset until the trigger fires, then
+    // releases them together. Now every capture starts the divider from the
+    // same phase, so sample 0 always lands a FIXED N+1 clocks after the
+    // trigger instead of a random 1..N. Same constant every time, so the PC
+    // can simply subtract it.
+    reg div_run;
+    always @(posedge clk) begin
+        if (reset)
+            div_run <= 0;
+        else if (probe_trigger)
+            div_run <= 1;      // capture starting - let the dividers go
+        else if (arm_pulse)
+            div_run <= 0;      // capture finished and re-armed - park them again
+    end
+
+    wire div_reset = reset || ~div_run;
+
+    rate_div #(.N(5))    rate_div_0 (.clk(clk), .reset(div_reset), .sample_en(sample_en_0));
+    rate_div #(.N(50))   rate_div_1 (.clk(clk), .reset(div_reset), .sample_en(sample_en_1));
+    rate_div #(.N(500))  rate_div_2 (.clk(clk), .reset(div_reset), .sample_en(sample_en_2));
+    rate_div #(.N(5000)) rate_div_3 (.clk(clk), .reset(div_reset), .sample_en(sample_en_3));
 
     always @(*) begin       // combinational mux — just picking a wire, no clocking needed here
         case (rate)

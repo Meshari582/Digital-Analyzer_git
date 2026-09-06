@@ -39,7 +39,7 @@
 
 set_global_assignment -name FAMILY "MAX 10"
 set_global_assignment -name DEVICE 10M50DAF484C6GES
-set_global_assignment -name TOP_LEVEL_ENTITY logic_analyzer_top
+set_global_assignment -name TOP_LEVEL_ENTITY logic_analyzer_10m50_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 22.1STD.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "03:47:44  AUGUST 10, 2026"
 set_global_assignment -name LAST_QUARTUS_VERSION "22.1std.0 Lite Edition"
@@ -85,9 +85,13 @@ set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id logic_analyz
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME logic_analyzer_top_tb -section_id logic_analyzer_top_tb
 # --- Standalone bench configuration (MAX 10 10M50 Evaluation Kit) ---
 set_location_assignment PIN_J10 -to clk
-set_location_assignment PIN_G4 -to reset
 set_location_assignment PIN_R18 -to polarity
 set_location_assignment PIN_A6 -to probe_in_raw
+
+# S1 / USER_PB0 (doc 683447 Table 11) — active-low pushbutton, inverted to
+# active-high synchronous reset inside logic_analyzer_10m50_top.
+set_location_assignment PIN_R20 -to pb0_n
+set_instance_assignment -name IO_STANDARD "1.2 V" -to pb0_n
 
 # --- STM32 link (Pmod A, Bank 8, 3.3 V) — doc 683447 Table 19 ---
 # PMODA_D1, J8 pin 2
@@ -115,6 +119,7 @@ set_global_assignment -name VERILOG_FILE capture.v
 set_global_assignment -name VERILOG_FILE buffer.v
 set_global_assignment -name VERILOG_FILE readout.v
 set_global_assignment -name VERILOG_FILE logic_analyzer_top.v
+set_global_assignment -name VERILOG_FILE logic_analyzer_10m50_top.v
 
 # NOTE: the following were removed from the synthesis (VERILOG_FILE) list.
 # They are not on file, only removed from the Quartus source list:
@@ -155,7 +160,6 @@ set_global_assignment -name EDA_TEST_BENCH_FILE DFlipFlop.v -section_id logic_an
 set_global_assignment -name EDA_TEST_BENCH_FILE counter.v -section_id logic_analyzer_top_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE logic_analyzer_top.v -section_id logic_analyzer_top_tb
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clk
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to reset
 set_instance_assignment -name IO_STANDARD "1.2 V" -to polarity
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to probe_in_raw
 # Pmod A / Bank 8 is a 3.3 V bank (doc 683447 sec. 3.8.2) — all six
@@ -175,3 +179,4 @@ set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_
 #     this file. Pin mapping confirmed against doc 683447 Table 19.
 
 set_global_assignment -name SDC_FILE LogicAnalyzer.sdc
+set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"

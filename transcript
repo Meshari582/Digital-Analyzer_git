@@ -1,0 +1,9 @@
+# vsim -c -work sim_work/work -do "run -all; quit -f" readout_tb 
+# Start time: 19:52:51 on Sep 06,2026
+# Loading sim_work/work.readout_tb
+# Loading sim_work/work.readout
+# run -all
+# ** Note: $finish    : readout_tb.v(42)
+#    Time: 160 ns  Iteration: 0  Instance: /readout_tb
+# End time: 19:52:52 on Sep 06,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0

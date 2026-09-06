@@ -92,20 +92,20 @@ set_location_assignment PIN_R20 -to reset
 # --- Polarity switch (SW1.1, 1.2V) ---
 set_location_assignment PIN_R18 -to polarity
 
-# --- MCU interface: arm / rd_strobe ---
-set_location_assignment PIN_A19 -to arm_raw
+# --- MCU interface: arm / rd_strobe (Pmod A, J8) ---
+set_location_assignment PIN_E8 -to arm_raw
 
-set_location_assignment PIN_B19 -to rd_strobe_raw
+set_location_assignment PIN_B4 -to rd_strobe_raw
 
-# --- MCU interface: rate select (2 bits) ---
-set_location_assignment PIN_A20 -to rate[0]
+# --- MCU interface: rate select (2 bits) (Pmod A, J8) ---
+set_location_assignment PIN_A5 -to rate[0]
 
-set_location_assignment PIN_E16 -to rate[1]
+set_location_assignment PIN_B7 -to rate[1]
 
-# --- MCU interface: data / done outputs ---
-set_location_assignment PIN_C18 -to data
+# --- MCU interface: data / done outputs (Pmod A, J8) ---
+set_location_assignment PIN_E9 -to data
 
-set_location_assignment PIN_C19 -to done
+set_location_assignment PIN_A4 -to done
 
 # --- Self-test heartbeat LED (D3 on-board user LED, active-low) ---
 set_location_assignment PIN_C3 -to led_heartbeat

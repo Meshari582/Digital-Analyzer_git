@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "logic-analyzer"
+version = "0.1.0"
+description = "PC-side tool for the FPGA/MCU logic analyzer: framing, capture, VCD export, and plotting"
+requires-python = ">=3.10"
+dependencies = [
+    "pyserial==3.5",
+    "matplotlib==3.11.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "vcdvcd==2.6.0",
+]
+
+[project.scripts]
+logic-analyzer = "logic_analyzer.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["logic_analyzer*"]
+
+[tool.setuptools.package-data]
+logic_analyzer = ["testdata/*"]

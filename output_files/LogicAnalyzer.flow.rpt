@@ -1,0 +1,195 @@
+Flow report for LogicAnalyzer
+Sun Sep  6 22:10:53 2026
+Quartus Prime Version 22.1std.0 Build 915 10/25/2022 SC Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Flow Summary
+  3. Flow Settings
+  4. Flow Non-Default Global Settings
+  5. Flow Elapsed Time
+  6. Flow OS Summary
+  7. Flow Log
+  8. Flow Messages
+  9. Flow Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2022  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+
+
+
++-------------------------------------------------------------------------------------+
+; Flow Summary                                                                        ;
++------------------------------------+------------------------------------------------+
+; Flow Status                        ; Successful - Sun Sep  6 22:10:53 2026          ;
+; Quartus Prime Version              ; 22.1std.0 Build 915 10/25/2022 SC Lite Edition ;
+; Revision Name                      ; LogicAnalyzer                                  ;
+; Top-level Entity Name              ; logic_analyzer_10m50_top                       ;
+; Family                             ; MAX 10                                         ;
+; Device                             ; 10M50DAF484C6GES                               ;
+; Timing Models                      ; Preliminary                                    ;
+; Total logic elements               ; 156 / 49,760 ( < 1 % )                         ;
+;     Total combinational functions  ; 155 / 49,760 ( < 1 % )                         ;
+;     Dedicated logic registers      ; 109 / 49,760 ( < 1 % )                         ;
+; Total registers                    ; 109                                            ;
+; Total pins                         ; 10 / 360 ( 3 % )                               ;
+; Total virtual pins                 ; 0                                              ;
+; Total memory bits                  ; 16,384 / 1,677,312 ( < 1 % )                   ;
+; Embedded Multiplier 9-bit elements ; 0 / 288 ( 0 % )                                ;
+; Total PLLs                         ; 0 / 4 ( 0 % )                                  ;
+; UFM blocks                         ; 0 / 1 ( 0 % )                                  ;
+; ADC blocks                         ; 0 / 2 ( 0 % )                                  ;
++------------------------------------+------------------------------------------------+
+
+
++-----------------------------------------+
+; Flow Settings                           ;
++-------------------+---------------------+
+; Option            ; Setting             ;
++-------------------+---------------------+
+; Start date & time ; 09/06/2026 22:10:36 ;
+; Main task         ; Compilation         ;
+; Revision Name     ; LogicAnalyzer       ;
++-------------------+---------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------+
+; Flow Non-Default Global Settings                                                                                                                 ;
++--------------------------------------+----------------------------------------+---------------+--------------------------+-----------------------+
+; Assignment Name                      ; Value                                  ; Default Value ; Entity Name              ; Section Id            ;
++--------------------------------------+----------------------------------------+---------------+--------------------------+-----------------------+
+; COMPILER_SIGNATURE_ID                ; 43983409131418.178872183618176         ; --            ; --                       ; --                    ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --                       ; capture_tb            ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --                       ; buffer_tb             ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --                       ; sync_tb               ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --                       ; readout_tb            ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --                       ; Combined_tb_settings  ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --                       ; Counter_tb            ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --                       ; DFlipFlop_tb          ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --                       ; rate_div_tb           ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --                       ; trigger_tb            ;
+; EDA_NATIVELINK_SIMULATION_TEST_BENCH ; logic_analyzer_top_tb                  ; --            ; --                       ; eda_simulation        ;
+; EDA_OUTPUT_DATA_FORMAT               ; Verilog Hdl                            ; --            ; --                       ; eda_simulation        ;
+; EDA_SIMULATION_TOOL                  ; ModelSim (Verilog)                     ; <None>        ; --                       ; --                    ;
+; EDA_TEST_BENCH_ENABLE_STATUS         ; TEST_BENCH_MODE                        ; --            ; --                       ; eda_simulation        ;
+; EDA_TEST_BENCH_FILE                  ; capture.v                              ; --            ; --                       ; capture_tb            ;
+; EDA_TEST_BENCH_FILE                  ; capture_tb.v                           ; --            ; --                       ; capture_tb            ;
+; EDA_TEST_BENCH_FILE                  ; buffer.v                               ; --            ; --                       ; buffer_tb             ;
+; EDA_TEST_BENCH_FILE                  ; buffer_tb.v                            ; --            ; --                       ; buffer_tb             ;
+; EDA_TEST_BENCH_FILE                  ; sync.v                                 ; --            ; --                       ; sync_tb               ;
+; EDA_TEST_BENCH_FILE                  ; sync_tb.v                              ; --            ; --                       ; sync_tb               ;
+; EDA_TEST_BENCH_FILE                  ; DFlipFlop.v                            ; --            ; --                       ; sync_tb               ;
+; EDA_TEST_BENCH_FILE                  ; readout.v                              ; --            ; --                       ; readout_tb            ;
+; EDA_TEST_BENCH_FILE                  ; readout_tb.v                           ; --            ; --                       ; readout_tb            ;
+; EDA_TEST_BENCH_FILE                  ; logic_analyzer_top_tb.v                ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_TEST_BENCH_FILE                  ; sync.v                                 ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_TEST_BENCH_FILE                  ; rate_div.v                             ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_TEST_BENCH_FILE                  ; trigger.v                              ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_TEST_BENCH_FILE                  ; capture.v                              ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_TEST_BENCH_FILE                  ; readout.v                              ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_TEST_BENCH_FILE                  ; buffer.v                               ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_TEST_BENCH_FILE                  ; DFlipFlop.v                            ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_TEST_BENCH_FILE                  ; counter.v                              ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_TEST_BENCH_FILE                  ; logic_analyzer_top.v                   ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_TEST_BENCH_FILE                  ; combined.tb.v                          ; --            ; --                       ; Combined_tb_settings  ;
+; EDA_TEST_BENCH_FILE                  ; counter_tb.v                           ; --            ; --                       ; Counter_tb            ;
+; EDA_TEST_BENCH_FILE                  ; counter.v                              ; --            ; --                       ; Counter_tb            ;
+; EDA_TEST_BENCH_FILE                  ; DFlipFlop_tb.v                         ; --            ; --                       ; DFlipFlop_tb          ;
+; EDA_TEST_BENCH_FILE                  ; DFlipFlop.v                            ; --            ; --                       ; DFlipFlop_tb          ;
+; EDA_TEST_BENCH_FILE                  ; rate_div.v                             ; --            ; --                       ; rate_div_tb           ;
+; EDA_TEST_BENCH_FILE                  ; rate_div_tb.v                          ; --            ; --                       ; rate_div_tb           ;
+; EDA_TEST_BENCH_FILE                  ; counter.v                              ; --            ; --                       ; rate_div_tb           ;
+; EDA_TEST_BENCH_FILE                  ; trigger.v                              ; --            ; --                       ; trigger_tb            ;
+; EDA_TEST_BENCH_FILE                  ; trigger_tb.v                           ; --            ; --                       ; trigger_tb            ;
+; EDA_TEST_BENCH_MODULE_NAME           ; capture_tb                             ; --            ; --                       ; capture_tb            ;
+; EDA_TEST_BENCH_MODULE_NAME           ; buffer_tb                              ; --            ; --                       ; buffer_tb             ;
+; EDA_TEST_BENCH_MODULE_NAME           ; sync_tb                                ; --            ; --                       ; sync_tb               ;
+; EDA_TEST_BENCH_MODULE_NAME           ; readout_tb                             ; --            ; --                       ; readout_tb            ;
+; EDA_TEST_BENCH_MODULE_NAME           ; logic_analyzer_top_tb                  ; --            ; --                       ; logic_analyzer_top_tb ;
+; EDA_TEST_BENCH_MODULE_NAME           ; Combined_tb                            ; --            ; --                       ; Combined_tb_settings  ;
+; EDA_TEST_BENCH_MODULE_NAME           ; Counter_tb                             ; --            ; --                       ; Counter_tb            ;
+; EDA_TEST_BENCH_MODULE_NAME           ; DFlipFlop_tb                           ; --            ; --                       ; DFlipFlop_tb          ;
+; EDA_TEST_BENCH_MODULE_NAME           ; rate_div_tb                            ; --            ; --                       ; rate_div_tb           ;
+; EDA_TEST_BENCH_MODULE_NAME           ; trigger_tb                             ; --            ; --                       ; trigger_tb            ;
+; EDA_TEST_BENCH_NAME                  ; Combined_tb_settings                   ; --            ; --                       ; eda_simulation        ;
+; EDA_TEST_BENCH_NAME                  ; DFlipFlop_tb                           ; --            ; --                       ; eda_simulation        ;
+; EDA_TEST_BENCH_NAME                  ; Counter_tb                             ; --            ; --                       ; eda_simulation        ;
+; EDA_TEST_BENCH_NAME                  ; sync_tb                                ; --            ; --                       ; eda_simulation        ;
+; EDA_TEST_BENCH_NAME                  ; rate_div_tb                            ; --            ; --                       ; eda_simulation        ;
+; EDA_TEST_BENCH_NAME                  ; trigger_tb                             ; --            ; --                       ; eda_simulation        ;
+; EDA_TEST_BENCH_NAME                  ; capture_tb                             ; --            ; --                       ; eda_simulation        ;
+; EDA_TEST_BENCH_NAME                  ; buffer_tb                              ; --            ; --                       ; eda_simulation        ;
+; EDA_TEST_BENCH_NAME                  ; readout_tb                             ; --            ; --                       ; eda_simulation        ;
+; EDA_TEST_BENCH_NAME                  ; logic_analyzer_top_tb                  ; --            ; --                       ; eda_simulation        ;
+; EDA_TIME_SCALE                       ; 1 ps                                   ; --            ; --                       ; eda_simulation        ;
+; MAX_CORE_JUNCTION_TEMP               ; 85                                     ; --            ; --                       ; --                    ;
+; MIN_CORE_JUNCTION_TEMP               ; 0                                      ; --            ; --                       ; --                    ;
+; PARTITION_COLOR                      ; -- (Not supported for targeted family) ; --            ; logic_analyzer_10m50_top ; Top                   ;
+; PARTITION_FITTER_PRESERVATION_LEVEL  ; -- (Not supported for targeted family) ; --            ; logic_analyzer_10m50_top ; Top                   ;
+; PARTITION_NETLIST_TYPE               ; -- (Not supported for targeted family) ; --            ; logic_analyzer_10m50_top ; Top                   ;
+; POWER_BOARD_THERMAL_MODEL            ; None (CONSERVATIVE)                    ; --            ; --                       ; --                    ;
+; POWER_PRESET_COOLING_SOLUTION        ; 23 MM HEAT SINK WITH 200 LFPM AIRFLOW  ; --            ; --                       ; --                    ;
+; PROJECT_OUTPUT_DIRECTORY             ; output_files                           ; --            ; --                       ; --                    ;
+; TOP_LEVEL_ENTITY                     ; logic_analyzer_10m50_top               ; LogicAnalyzer ; --                       ; --                    ;
++--------------------------------------+----------------------------------------+---------------+--------------------------+-----------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------+
+; Flow Elapsed Time                                                                                                        ;
++----------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
++----------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Analysis & Synthesis ; 00:00:06     ; 1.0                     ; 4851 MB             ; 00:00:13                           ;
+; Fitter               ; 00:00:04     ; 1.1                     ; 6304 MB             ; 00:00:08                           ;
+; Assembler            ; 00:00:02     ; 1.0                     ; 4840 MB             ; 00:00:02                           ;
+; Timing Analyzer      ; 00:00:01     ; 1.2                     ; 4915 MB             ; 00:00:01                           ;
+; EDA Netlist Writer   ; 00:00:00     ; 1.0                     ; 4688 MB             ; 00:00:00                           ;
+; Total                ; 00:00:13     ; --                      ; --                  ; 00:00:24                           ;
++----------------------+--------------+-------------------------+---------------------+------------------------------------+
+
+
++------------------------------------------------------------------------------------+
+; Flow OS Summary                                                                    ;
++----------------------+------------------+------------+------------+----------------+
+; Module Name          ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
++----------------------+------------------+------------+------------+----------------+
+; Analysis & Synthesis ; DESKTOP-F5RVILJ  ; Windows 10 ; 10.0       ; x86_64         ;
+; Fitter               ; DESKTOP-F5RVILJ  ; Windows 10 ; 10.0       ; x86_64         ;
+; Assembler            ; DESKTOP-F5RVILJ  ; Windows 10 ; 10.0       ; x86_64         ;
+; Timing Analyzer      ; DESKTOP-F5RVILJ  ; Windows 10 ; 10.0       ; x86_64         ;
+; EDA Netlist Writer   ; DESKTOP-F5RVILJ  ; Windows 10 ; 10.0       ; x86_64         ;
++----------------------+------------------+------------+------------+----------------+
+
+
+------------
+; Flow Log ;
+------------
+quartus_map --read_settings_files=on --write_settings_files=off LogicAnalyzer -c LogicAnalyzer
+quartus_fit --read_settings_files=off --write_settings_files=off LogicAnalyzer -c LogicAnalyzer
+quartus_asm --read_settings_files=off --write_settings_files=off LogicAnalyzer -c LogicAnalyzer
+quartus_sta LogicAnalyzer -c LogicAnalyzer
+quartus_eda --read_settings_files=off --write_settings_files=off LogicAnalyzer -c LogicAnalyzer
+
+
+

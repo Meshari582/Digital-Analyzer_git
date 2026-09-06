@@ -1,0 +1,18 @@
+Fitter Status : Successful - Sun Sep  6 22:10:47 2026
+Quartus Prime Version : 22.1std.0 Build 915 10/25/2022 SC Lite Edition
+Revision Name : LogicAnalyzer
+Top-level Entity Name : logic_analyzer_10m50_top
+Family : MAX 10
+Device : 10M50DAF484C6GES
+Timing Models : Preliminary
+Total logic elements : 156 / 49,760 ( < 1 % )
+    Total combinational functions : 155 / 49,760 ( < 1 % )
+    Dedicated logic registers : 109 / 49,760 ( < 1 % )
+Total registers : 109
+Total pins : 10 / 360 ( 3 % )
+Total virtual pins : 0
+Total memory bits : 16,384 / 1,677,312 ( < 1 % )
+Embedded Multiplier 9-bit elements : 0 / 288 ( 0 % )
+Total PLLs : 0 / 4 ( 0 % )
+UFM blocks : 0 / 1 ( 0 % )
+ADC blocks : 0 / 2 ( 0 % )

@@ -1,0 +1,20 @@
+[1mdiff --git a/LogicAnalyzer.qsf b/LogicAnalyzer.qsf[m
+[1mindex 196f336..b54bef7 100644[m
+[1m--- a/LogicAnalyzer.qsf[m
+[1m+++ b/LogicAnalyzer.qsf[m
+[36m@@ -173,10 +173,11 @@[m [mset_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to done[m
+ set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top[m
+ set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top[m
+ set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top[m
+[31m-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top[m
+ [m
+ # --- STM32 link (Pmod A) is now active — see assignments near the top of[m
+ #     this file. Pin mapping confirmed against doc 683447 Table 19.[m
+ [m
+ set_global_assignment -name SDC_FILE LogicAnalyzer.sdc[m
+[31m-set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"[m
+\ No newline at end of file[m
+[32m+[m[32mset_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"[m
+[32m+[m[32mset_global_assignment -name RESERVE_ALL_UNUSED_PINS_NO_OUTPUT_GND "AS INPUT TRI-STATED"[m
+[32m+[m[32mset_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top[m
+\ No newline at end of file[m

@@ -87,40 +87,44 @@ set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME logic_analyzer_top_tb -se
 set_location_assignment PIN_J10 -to clk
 set_location_assignment PIN_G4 -to reset
 set_location_assignment PIN_R18 -to polarity
-set_location_assignment PIN_T19 -to rate[0]
-set_location_assignment PIN_T18 -to rate[1]
-set_location_assignment PIN_U19 -to arm_raw
-set_location_assignment PIN_Y20 -to rd_strobe_raw
 set_location_assignment PIN_A6 -to probe_in_raw
-set_location_assignment PIN_C3 -to data
-set_location_assignment PIN_C4 -to done
+
+# --- STM32 link (Pmod A, Bank 8, 3.3 V) — doc 683447 Table 19 ---
+# PMODA_D1, J8 pin 2
+set_location_assignment PIN_E8 -to arm_raw
+# PMODA_D2, J8 pin 3
+set_location_assignment PIN_B4 -to rd_strobe_raw
+# PMODA_D3, J8 pin 4
+set_location_assignment PIN_A5 -to rate[0]
+# PMODA_D4, J8 pin 7
+set_location_assignment PIN_B7 -to rate[1]
+# PMODA_D5, J8 pin 8
+set_location_assignment PIN_E9 -to data
+# PMODA_D6, J8 pin 9
+set_location_assignment PIN_A4 -to done
 
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to probe_in_raw
-set_global_assignment -name VERILOG_FILE ORgate.v
-set_global_assignment -name VERILOG_FILE combined.v
-set_global_assignment -name SOURCE_FILE combined.tb
-set_global_assignment -name VERILOG_FILE combined.tb.v
-set_global_assignment -name VERILOG_FILE AndGate.v
+
+# Synthesis sources (logic_analyzer_top and its real dependencies only)
 set_global_assignment -name VERILOG_FILE DFlipFlop.v
-set_global_assignment -name VERILOG_FILE DFlipFlop_tb.v
 set_global_assignment -name VERILOG_FILE counter.v
-set_global_assignment -name VERILOG_FILE counter_tb.v
 set_global_assignment -name VERILOG_FILE sync.v
-set_global_assignment -name VERILOG_FILE sync_tb.v
 set_global_assignment -name VERILOG_FILE rate_div.v
-set_global_assignment -name VERILOG_FILE rate_div_tb.v
 set_global_assignment -name VERILOG_FILE trigger.v
-set_global_assignment -name VERILOG_FILE trigger_tb.v
 set_global_assignment -name VERILOG_FILE capture.v
-set_global_assignment -name VERILOG_FILE capture_tb.v
 set_global_assignment -name VERILOG_FILE buffer.v
-set_global_assignment -name VERILOG_FILE buffer_tb.v
 set_global_assignment -name VERILOG_FILE readout.v
-set_global_assignment -name VERILOG_FILE readout_tb.v
-set_global_assignment -name VERILOG_FILE logic_analyzer_top_tb.v
-set_global_assignment -name VERILOG_FILE counter_wide.v
-set_global_assignment -name VERILOG_FILE output_files/logic_analyzer_selftest.v
 set_global_assignment -name VERILOG_FILE logic_analyzer_top.v
+
+# NOTE: the following were removed from the synthesis (VERILOG_FILE) list.
+# They are not on file, only removed from the Quartus source list:
+#   Testbenches (simulation-only; still present below as EDA_TEST_BENCH_FILE):
+#     DFlipFlop_tb.v, counter_tb.v, sync_tb.v, rate_div_tb.v, trigger_tb.v,
+#     capture_tb.v, buffer_tb.v, readout_tb.v, logic_analyzer_top_tb.v,
+#     combined.tb.v, combined.tb
+#   Dead/experimental modules unreachable from logic_analyzer_top:
+#     ORgate.v, combined.v, AndGate.v, counter_wide.v,
+#     output_files/logic_analyzer_selftest.v
 set_global_assignment -name EDA_TEST_BENCH_FILE combined.tb.v -section_id Combined_tb_settings
 set_global_assignment -name EDA_TEST_BENCH_FILE DFlipFlop_tb.v -section_id DFlipFlop_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE DFlipFlop.v -section_id DFlipFlop_tb
@@ -153,11 +157,13 @@ set_global_assignment -name EDA_TEST_BENCH_FILE logic_analyzer_top.v -section_id
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clk
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to reset
 set_instance_assignment -name IO_STANDARD "1.2 V" -to polarity
-set_instance_assignment -name IO_STANDARD "1.2 V" -to rate[0]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to rate[1]
-set_instance_assignment -name IO_STANDARD "1.2 V" -to arm_raw
-set_instance_assignment -name IO_STANDARD "1.2 V" -to rd_strobe_raw
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to probe_in_raw
+# Pmod A / Bank 8 is a 3.3 V bank (doc 683447 sec. 3.8.2) — all six
+# STM32 link signals use 3.3-V LVTTL, matching probe_in_raw on the same bank.
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rate[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rate[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to arm_raw
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rd_strobe_raw
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to data
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to done
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
@@ -165,10 +171,7 @@ set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_RO
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 
-# --- STM32 link configuration (swap in later; keep commented out) ---
-# set_location_assignment PIN_E8 -to arm_raw          ;# PMODA_D1, J8 pin 2
-# set_location_assignment PIN_B4 -to rd_strobe_raw    ;# PMODA_D2, J8 pin 3
-# set_location_assignment PIN_A5 -to rate[0]          ;# PMODA_D3, J8 pin 4
-# set_location_assignment PIN_B7 -to rate[1]          ;# PMODA_D4, J8 pin 7
-# set_location_assignment PIN_E9 -to data             ;# PMODA_D5, J8 pin 8
-# set_location_assignment PIN_A4 -to done             ;# PMODA_D6, J8 pin 9
+# --- STM32 link (Pmod A) is now active — see assignments near the top of
+#     this file. Pin mapping confirmed against doc 683447 Table 19.
+
+set_global_assignment -name SDC_FILE LogicAnalyzer.sdc

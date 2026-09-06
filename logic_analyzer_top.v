@@ -1,3 +1,5 @@
+`include "logic_analyzer_params.vh"
+
 module logic_analyzer_top (
     //Board-side inputs
     input  clk,              // 50 MHz onboard clock — the single clock domain for the whole design
@@ -22,10 +24,20 @@ module logic_analyzer_top (
     // one gets its own two-flop sync module before it's allowed to
     // touch anything else in the design.
 	 //2 clock cycle delays
+    //
+    // polarity and rate[1:0] are also board-level inputs (DIP switches,
+    // doc 683447 Table 12) with no timing relationship to clk, so they get
+    // the same two-flop treatment. Each bit of rate is synced independently
+    // with its own sync instance -- fine here because rate only comes from
+    // a hand-operated switch, changes are rare, and any single-cycle
+    // transient mux mismatch during a switch change is harmless (rate is
+    // only consulted while div_run is active, long after power-up settling).
 
     wire probe_sync;
     wire arm_sync;
     wire rd_strobe_sync;
+    wire polarity_sync;
+    wire [1:0] rate_sync;
 
     sync sync_probe (
         .clk(clk),
@@ -46,6 +58,27 @@ module logic_analyzer_top (
         .reset(reset),
         .d(rd_strobe_raw),
         .q(rd_strobe_sync)
+    );
+
+    sync sync_polarity (
+        .clk(clk),
+        .reset(reset),
+        .d(polarity),
+        .q(polarity_sync)
+    );
+
+    sync sync_rate0 (
+        .clk(clk),
+        .reset(reset),
+        .d(rate[0]),
+        .q(rate_sync[0])
+    );
+
+    sync sync_rate1 (
+        .clk(clk),
+        .reset(reset),
+        .d(rate[1]),
+        .q(rate_sync[1])
     );
 
     // STAGE 2 — Trigger x3
@@ -75,7 +108,7 @@ module logic_analyzer_top (
         .clk(clk),
         .probe_in(probe_sync),
 		  .reset(reset),
-        .polarity(polarity),      // board switch decides rising vs falling edge
+        .polarity(polarity_sync), // board switch decides rising vs falling edge (synced)
         .output_trigger(probe_trigger)
     );
 
@@ -132,13 +165,13 @@ module logic_analyzer_top (
 
     wire div_reset = reset || ~div_run;
 
-    rate_div #(.N(5))    rate_div_0 (.clk(clk), .reset(div_reset), .sample_en(sample_en_0));
-    rate_div #(.N(50))   rate_div_1 (.clk(clk), .reset(div_reset), .sample_en(sample_en_1));
-    rate_div #(.N(500))  rate_div_2 (.clk(clk), .reset(div_reset), .sample_en(sample_en_2));
-    rate_div #(.N(5000)) rate_div_3 (.clk(clk), .reset(div_reset), .sample_en(sample_en_3));
+    rate_div #(.N(`RATE_DIV_0)) rate_div_0 (.clk(clk), .reset(div_reset), .sample_en(sample_en_0));
+    rate_div #(.N(`RATE_DIV_1)) rate_div_1 (.clk(clk), .reset(div_reset), .sample_en(sample_en_1));
+    rate_div #(.N(`RATE_DIV_2)) rate_div_2 (.clk(clk), .reset(div_reset), .sample_en(sample_en_2));
+    rate_div #(.N(`RATE_DIV_3)) rate_div_3 (.clk(clk), .reset(div_reset), .sample_en(sample_en_3));
 
     always @(*) begin       // combinational mux — just picking a wire, no clocking needed here
-        case (rate)
+        case (rate_sync)
             2'b00: sample_en = sample_en_0;
             2'b01: sample_en = sample_en_1;
             2'b10: sample_en = sample_en_2;
@@ -150,8 +183,8 @@ module logic_analyzer_top (
     // STAGE 4 — capture -> buffer -> readout
     
     wire        we;              // buffer's write enable
-    wire [13:0] sample_counter;  // capture's running count -> buffer's write address, 14 bits width
-    wire [13:0] raddr;           // readout's read pointer -> buffer's read address
+    wire [`ADDR_WIDTH-1:0] sample_counter;  // capture's running count -> buffer's write address
+    wire [`ADDR_WIDTH-1:0] raddr;           // readout's read pointer -> buffer's read address
     wire        rdata;           // buffer's read output -> readout's data input
 
     // capture also needs to clear readout's read pointer back to page 0

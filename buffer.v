@@ -1,14 +1,16 @@
+`include "logic_analyzer_params.vh"
+
 module buffer (
     input clk,
     // WRITING side — used by capture
     input we,             // "write enable" — only actually write when this is high
-    input [13:0] waddr,   // which page to write to (14 bits covers 0–16383)
+    input [`ADDR_WIDTH-1:0] waddr,   // which page to write to (14 bits covers 0-16383)
     input wdata,           // the bit to write onto that page
     // READING side — used by readout
-    input [13:0] raddr,   // which page to read from
+    input [`ADDR_WIDTH-1:0] raddr,   // which page to read from
     output reg rdata       // the bit that comes back off that page
 );
-reg mem [0:16383];   // the notebook: 16384 pages, 1 bit each
+reg mem [0:`BUFFER_DEPTH-1];   // the notebook: 16384 pages, 1 bit each
 always @(posedge clk) begin
     if (we)
         mem[waddr] <= wdata;

@@ -39,7 +39,7 @@
 
 set_global_assignment -name FAMILY "MAX 10"
 set_global_assignment -name DEVICE 10M50DAF484C6GES
-set_global_assignment -name TOP_LEVEL_ENTITY logic_analyzer_10m50_top
+set_global_assignment -name TOP_LEVEL_ENTITY logic_analyzer_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 22.1STD.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "03:47:44  AUGUST 10, 2026"
 set_global_assignment -name LAST_QUARTUS_VERSION "22.1std.0 Lite Edition"
@@ -83,33 +83,35 @@ set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME readout_tb -section_id re
 set_global_assignment -name EDA_TEST_BENCH_NAME logic_analyzer_top_tb -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id logic_analyzer_top_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME logic_analyzer_top_tb -section_id logic_analyzer_top_tb
-# --- Standalone bench configuration (MAX 10 10M50 Evaluation Kit) ---
+# --- Clock: CLK50M_MAX10, 50 MHz crystal oscillator (U15), doc 683447 Table 15 ---
 set_location_assignment PIN_J10 -to clk
+
+# --- Reset: SW2.1, doc 683447 Table 12 (3.3 V DIP switch -- NOT the S1
+# pushbutton on R20). SW2.1's factory-default position is HIGH (OFF=1, per
+# doc 683447 Table 4). logic_analyzer_top's reset is active-high with no
+# inversion, so the design sits in reset until SW2.1 is moved to ON (LOW). ---
+set_location_assignment PIN_G4 -to reset
+
+# --- Polarity switch (SW1.1, 1.2V, doc 683447 Table 12) ---
 set_location_assignment PIN_R18 -to polarity
+
+# --- Probe input: Pmod A pin 1 / PMODA_D0, doc 683447 Table 19 ---
 set_location_assignment PIN_A6 -to probe_in_raw
 
-# S1 / USER_PB0 (doc 683447 Table 11) — active-low pushbutton, inverted to
-# active-high synchronous reset inside logic_analyzer_10m50_top.
-set_location_assignment PIN_R20 -to pb0_n
-set_instance_assignment -name IO_STANDARD "1.2 V" -to pb0_n
-
-# --- STM32 link (Pmod A, Bank 8, 3.3 V) — doc 683447 Table 19 ---
-# PMODA_D1, J8 pin 2
+# --- MCU interface: arm / rd_strobe -- Pmod A pins 2/3 (PMODA_D1/D2) ---
 set_location_assignment PIN_E8 -to arm_raw
-# PMODA_D2, J8 pin 3
+
 set_location_assignment PIN_B4 -to rd_strobe_raw
-# PMODA_D3, J8 pin 4
+
+# --- MCU interface: rate select (2 bits) -- Pmod A pins 4/7 (PMODA_D3/D4) ---
 set_location_assignment PIN_A5 -to rate[0]
-# PMODA_D4, J8 pin 7
+
 set_location_assignment PIN_B7 -to rate[1]
-# PMODA_D5, J8 pin 8
+
+# --- MCU interface: data / done outputs -- Pmod A pins 8/9 (PMODA_D5/D6) ---
 set_location_assignment PIN_E9 -to data
-# PMODA_D6, J8 pin 9
+
 set_location_assignment PIN_A4 -to done
-
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to probe_in_raw
-
-# Synthesis sources (logic_analyzer_top and its real dependencies only)
 set_global_assignment -name VERILOG_FILE DFlipFlop.v
 set_global_assignment -name VERILOG_FILE counter.v
 set_global_assignment -name VERILOG_FILE sync.v
@@ -119,17 +121,7 @@ set_global_assignment -name VERILOG_FILE capture.v
 set_global_assignment -name VERILOG_FILE buffer.v
 set_global_assignment -name VERILOG_FILE readout.v
 set_global_assignment -name VERILOG_FILE logic_analyzer_top.v
-set_global_assignment -name VERILOG_FILE logic_analyzer_10m50_top.v
-
-# NOTE: the following were removed from the synthesis (VERILOG_FILE) list.
-# They are not on file, only removed from the Quartus source list:
-#   Testbenches (simulation-only; still present below as EDA_TEST_BENCH_FILE):
-#     DFlipFlop_tb.v, counter_tb.v, sync_tb.v, rate_div_tb.v, trigger_tb.v,
-#     capture_tb.v, buffer_tb.v, readout_tb.v, logic_analyzer_top_tb.v,
-#     combined.tb.v, combined.tb
-#   Dead/experimental modules unreachable from logic_analyzer_top:
-#     ORgate.v, combined.v, AndGate.v, counter_wide.v,
-#     output_files/logic_analyzer_selftest.v
+set_global_assignment -name SDC_FILE LogicAnalyzer.sdc
 set_global_assignment -name EDA_TEST_BENCH_FILE combined.tb.v -section_id Combined_tb_settings
 set_global_assignment -name EDA_TEST_BENCH_FILE DFlipFlop_tb.v -section_id DFlipFlop_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE DFlipFlop.v -section_id DFlipFlop_tb
@@ -159,25 +151,17 @@ set_global_assignment -name EDA_TEST_BENCH_FILE buffer.v -section_id logic_analy
 set_global_assignment -name EDA_TEST_BENCH_FILE DFlipFlop.v -section_id logic_analyzer_top_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE counter.v -section_id logic_analyzer_top_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE logic_analyzer_top.v -section_id logic_analyzer_top_tb
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clk
-set_instance_assignment -name IO_STANDARD "1.2 V" -to polarity
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to probe_in_raw
-# Pmod A / Bank 8 is a 3.3 V bank (doc 683447 sec. 3.8.2) — all six
-# STM32 link signals use 3.3-V LVTTL, matching probe_in_raw on the same bank.
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rate[0]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rate[1]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to arm_raw
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rd_strobe_raw
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to data
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to done
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-
-# --- STM32 link (Pmod A) is now active — see assignments near the top of
-#     this file. Pin mapping confirmed against doc 683447 Table 19.
-
-set_global_assignment -name SDC_FILE LogicAnalyzer.sdc
-set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"
-set_global_assignment -name RESERVE_ALL_UNUSED_PINS_NO_OUTPUT_GND "AS INPUT TRI-STATED"
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clk
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to reset
+set_instance_assignment -name IO_STANDARD "1.2 V" -to polarity
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to probe_in_raw
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to arm_raw
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rd_strobe_raw
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rate[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rate[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to data
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to done
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -1,11 +1,9 @@
-`include "logic_analyzer_params.vh"
-
 module readout (
     input clk,
     input reset,           // resets raddr back to page 0 at the start of a new capture
-    input rd_strobe,
-    input rdata,
-    output reg [`ADDR_WIDTH-1:0] raddr,   // which page to read from
+    input rd_strobe,            
+    input rdata,           
+    output reg [13:0] raddr,   // which page to read from
     output reg data_out       // the bit that comes back off that page
 );
     always @(posedge clk) begin

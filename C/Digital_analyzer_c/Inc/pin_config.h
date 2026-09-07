@@ -9,8 +9,8 @@
 #define RD_STROBE_PIN   GPIO_PIN_11
 #define DATA_PORT       GPIOC
 #define DATA_PIN        GPIO_PIN_7
-#define DONE_PORT       GPIOF
-#define DONE_PIN        GPIO_PIN_12
+#define DONE_PORT       GPIOE
+#define DONE_PIN        GPIO_PIN_13
 #define RATE0_PORT      GPIOB
 #define RATE0_PIN       GPIO_PIN_4
 #define RATE1_PORT      GPIOB

@@ -17,15 +17,15 @@ void gpio_init(void)
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
-    __HAL_RCC_GPIOF_CLK_ENABLE();
+    __HAL_RCC_GPIOE_CLK_ENABLE();
 
     /* REQUIRED for EXTI. HAL_GPIO_Init() used to write SYSCFG->EXTICR[] to
      * select which PORT drives a given EXTI line; we do that write directly
      * below. With the SYSCFG clock off that write is silently discarded -
      * no fault, no warning. It only appeared to work before because EXTICR
      * resets to 0, which selects port A, and DONE happened to be on PA9.
-     * Move DONE to any other port without this line and the interrupt just
-     * never fires. */
+     * Move DONE to any other port (it's now PE13) without this line and the
+     * interrupt just never fires. */
     __HAL_RCC_SYSCFG_CLK_ENABLE();
 
     /* ARM, RD_STROBE, RATE0, RATE1: push-pull output, no pull, high speed.
@@ -82,7 +82,7 @@ void gpio_init(void)
     RD_STROBE_PORT->BSRR = (uint32_t)RD_STROBE_PIN << 16;
     rate_set(0);
 
-    /* Pins 10..15 share the EXTI15_10 vector. DONE is on pin 12 today. If it
+    /* Pins 10..15 share the EXTI15_10 vector. DONE is on pin 13 today. If it
      * moves outside 10..15, change both this IRQn and the handler in
      * drain_loop.c. */
     HAL_NVIC_SetPriority(EXTI15_10_IRQn, 5, 0);
